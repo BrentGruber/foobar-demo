@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -o kubernetes/
+    kompose.version: 1.22.0 (955b78124)
+  labels:
+    io.kompose.service: tempo
+  name: tempo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: tempo
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      annotations:
+        kompose.cmd: kompose convert -o kubernetes/
+        kompose.version: 1.22.0 (955b78124)
+      labels:
+        io.kompose.service: tempo
+    spec:
+      containers:
+        - image: grafana/tempo:latest
+          name: tempo
+          args: ["-config.file=/etc/config/tempo.yaml"]
+          ports:
+            - containerPort: 3100
+            - containerPort: 55680
+          resources: {}
+          volumeMounts:
+            - mountPath: //etcconfig
+              name: tempo-claim0
+      restartPolicy: Always
+      volumes:
+        - name: tempo-claim0
+          configMap:
+            defaultMode: 420
+            name: tempo-config
+status: {}
