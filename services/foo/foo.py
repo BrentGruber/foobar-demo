@@ -47,7 +47,7 @@ log.setLevel(logging.ERROR)
 app.logger.setLevel(logging.INFO)
 default_handler.setFormatter(
     SpanFormatter(
-        'time="%(asctime)s" service=%(name)s level=%(levelname)s %(message)s trace_id=%(trace_id)s'
+        'time="%(asctime)s" service=%(name)s level=%(levelname)s %(message)s traceID=%(trace_id)s'
     )
 )
 
